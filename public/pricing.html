@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="google-site-verification" content="Z933N5cluGhC9A1I-XFoSA-6z_EipNNo3kPR4o7DFcY" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing -TechFix</title>
+      <link rel="icon" href="favicon.png" type="image/png">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="responsive-fixes.css">
+<style>
+        /* Reuse styles from index.html */
+        :root {
+            --primary: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-dark: #1e40af;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --light-bg: #f8fafc;
+            --white: #ffffff;
+            --gray: #e2e8f0;
+            --success: #16a34a;
+            --success-light: #f0fdf4;
+            --error: #dc2626;
+            --error-light: #fee2e2;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text);
+        }
+
+        /* Navigation - same as index.html */
+        .navbar {
+            padding: 15px 0;
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            background-color: rgba(255, 255, 255, 0.95) !important;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            padding: 10px 0;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .nav-link {
+            font-weight: 500;
+            margin: 0 10px;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        /* Pricing Hero */
+        .pricing-hero {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.9), rgba(59, 130, 246, 0.8)), 
+                        url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 150px 0 100px;
+            margin-top: 60px;
+        }
+
+        .pricing-hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .pricing-hero p {
+            font-size: 1.25rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            opacity: 0.9;
+        }
+
+        /* Pricing Plans */
+        .pricing-plans {
+            padding: 100px 0;
+            background-color: var(--light-bg);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -10px;
+            width: 80px;
+            height: 3px;
+            background-color: var(--primary);
+            transform: translateX(-50%);
+            border-radius: 3px;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 50px;
+        }
+
+        .pricing-card {
+            background: white;
+            border-radius: 12px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            height: 100%;
+            position: relative;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .pricing-card.featured {
+            border: 2px solid var(--primary);
+            transform: scale(1.05);
+            z-index: 1;
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: 20px;
+            right: -30px;
+            background-color: var(--primary);
+            color: white;
+            padding: 5px 30px;
+            transform: rotate(45deg);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .pricing-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--gray);
+            text-align: center;
+        }
+
+        .pricing-header h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .price span {
+            font-size: 1rem;
+            color: var(--text-light);
+            font-weight: 400;
+        }
+
+        .price-description {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .features {
+            list-style: none;
+            padding: 0;
+            margin: 30px 0;
+        }
+
+        .features li {
+            padding: 10px 0;
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .features li::before {
+            content: '\f00c';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            color: var(--primary);
+            position: absolute;
+            left: 0;
+        }
+
+        .features li.disabled {
+            color: var(--text-light);
+        }
+
+        .features li.disabled::before {
+            content: '\f00d';
+            color: var(--text-light);
+        }
+
+        /* Service Pricing */
+        .service-pricing {
+            padding: 100px 0;
+            background: white;
+        }
+
+        .price-table {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .price-row {
+            display: flex;
+            background-color: white;
+        }
+
+        .price-row.header {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .price-col {
+            padding: 15px 20px;
+            flex: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .price-col.service {
+            flex: 2;
+        }
+
+        .price-col.price {
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .price-col.action {
+            justify-content: center;
+            max-width: 120px;
+        }
+
+        .price-row:not(:last-child) {
+            border-bottom: 1px solid var(--gray);
+        }
+
+        .price-row.header .price-col {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 14px;
+            justify-content: center;
+        }
+
+        .price-row .price-col.service h4 {
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+
+        .price-row .price-col.service p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 0;
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            padding: 100px 0;
+            background-color: var(--light-bg);
+        }
+
+        .accordion-item {
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 8px !important;
+            margin-bottom: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+        }
+
+        .accordion-button {
+            font-weight: 600;
+            padding: 20px;
+        }
+
+        .accordion-button:not(.collapsed) {
+            background-color: rgba(37, 99, 235, 0.05);
+            color: var(--primary);
+        }
+
+        .accordion-button:focus {
+            box-shadow: none;
+            border-color: rgba(37, 99, 235, 0.2);
+        }
+
+        /* Emergency Section - same as index.html */
+        .emergency-section {
+            padding: 60px 0;
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* Footer - same as index.html */
+        .footer {
+            background-color: #1e293b;
+            color: white;
+            padding: 80px 0 30px;
+        }
+
+        .footer h5 {
+            font-weight: 600;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer h5::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--primary);
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            margin-right: 10px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            margin-top: 40px;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 0.875rem;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .pricing-card.featured {
+                transform: none;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .price {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .pricing-hero {
+                padding: 120px 0 80px;
+            }
+            
+            .pricing-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .price-row {
+                flex-direction: column;
+            }
+            
+            .price-col {
+                justify-content: flex-start;
+            }
+            
+            .price-col.action {
+                max-width: 100%;
+                justify-content: flex-start;
+                padding-top: 0;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .pricing-hero h1 {
+                font-size: 1.75rem;
+            }
+            
+            .section-title {
+                font-size: 1.75rem;
+            }
+        }
+    
+/* ===== TechFix Live Chat Widget ===== */
+.tf-chat-widget{position:fixed;right:22px;bottom:110px;z-index:1200;font-family:inherit}
+.tf-chat-toggle{width:60px;height:60px;border-radius:50%;background:var(--tf-primary,var(--primary,#2563eb));display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;box-shadow:0 10px 30px rgba(37,99,235,.35);transition:transform .2s ease;border:none}
+.tf-chat-toggle:hover{transform:scale(1.06)}
+.tf-chat-toggle i{font-size:1.35rem}
+.tf-chat-window{width:370px;max-width:92vw;height:520px;max-height:75vh;border-radius:18px;box-shadow:0 24px 60px rgba(0,0,0,.22);overflow:hidden;background:#fff;display:flex;flex-direction:column;position:fixed;right:22px;bottom:182px;z-index:1201;border:1px solid rgba(0,0,0,.06)}
+.tf-chat-header{background:var(--tf-primary,var(--primary,#2563eb));color:#fff;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.tf-chat-header-title{font-weight:600;font-size:.98rem}
+.tf-chat-header-status{font-size:.72rem;opacity:.9}
+.tf-chat-close{cursor:pointer;background:rgba(255,255,255,.18);border:none;color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tf-chat-body{flex:1;padding:14px;overflow-y:auto;background:#f7f9fc;display:flex;flex-direction:column;gap:2px}
+.tf-chat-input-row{display:flex;padding:10px;border-top:1px solid #eee;background:#fff;flex-shrink:0;gap:8px}
+.tf-chat-input-row input{flex:1;padding:10px 14px;border-radius:999px;border:1px solid #ddd;font-size:14px;min-width:0}
+.tf-chat-input-row button{border-radius:50%;width:40px;height:40px;flex-shrink:0;display:flex;align-items:center;justify-content:center;padding:0}
+.tf-chat-msg{display:flex;margin-bottom:8px}
+.tf-chat-msg .tf-bubble{max-width:78%;padding:9px 13px;border-radius:14px;line-height:1.4;font-size:.88rem;word-wrap:break-word}
+.tf-chat-msg.tf-customer{justify-content:flex-end}
+.tf-chat-msg.tf-customer .tf-bubble{background:var(--tf-primary,var(--primary,#2563eb));color:#fff;border-bottom-right-radius:4px}
+.tf-chat-msg.tf-bot .tf-bubble{background:#eef2ff;color:#1e293b;border-bottom-left-radius:4px}
+.tf-chat-msg-meta{font-size:9px;color:#94a3b8;margin-top:3px}
+.tf-chat-start{padding:20px}
+.tf-chat-start h6{font-weight:600;margin-bottom:14px}
+.tf-chat-start input{margin-bottom:10px}
+.tf-hidden{display:none!important}
+@media (max-width:576px){
+  .tf-chat-window{width:94vw;right:3vw;height:72vh;bottom:168px}
+  .tf-chat-toggle{width:54px;height:54px}
+  .tf-chat-widget{right:16px;bottom:100px}
+}
+
+
+/* ===== TechFix Maintenance Mode Overlay ===== */
+#tfMaintenanceOverlay{display:none;position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 55%,#2563eb 100%);align-items:center;justify-content:center;padding:24px;}
+#tfMaintenanceOverlay.tf-show{display:flex;}
+.tf-maint-card{background:#fff;border-radius:22px;max-width:480px;width:100%;padding:44px 36px;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.35);}
+.tf-maint-icon{width:78px;height:78px;border-radius:50%;background:#eff6ff;color:var(--tf-primary,var(--primary,#2563eb));display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 20px;animation:tfSpin 3.5s linear infinite;}
+@keyframes tfSpin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+.tf-maint-badge{display:inline-block;background:#fef3c7;color:#92400e;font-size:.75rem;font-weight:600;padding:5px 14px;border-radius:999px;margin-bottom:16px;letter-spacing:.02em;}
+.tf-maint-card h2{font-weight:700;margin-bottom:12px;color:#0f172a;}
+.tf-maint-card p.tf-maint-msg{color:#475569;line-height:1.6;margin-bottom:22px;}
+.tf-maint-contact{border-top:1px solid #eef0f5;padding-top:18px;margin-top:6px;font-size:.86rem;color:#64748b;}
+.tf-maint-contact a{color:var(--tf-primary,var(--primary,#2563eb));text-decoration:none;font-weight:600;}
+.tf-maint-footer{margin-top:16px;font-size:.82rem;color:#94a3b8;}
+@media (max-width:480px){ .tf-maint-card{padding:32px 22px;} }
+
+</style>
+</head>
+<body>
+
+<!-- ===== TechFix Maintenance Mode Overlay (auto-inserted) ===== -->
+<div id="tfMaintenanceOverlay">
+  <div class="tf-maint-card">
+    <div class="tf-maint-icon"><i class="fas fa-gear"></i></div>
+    <div class="tf-maint-badge" id="tfMaintBadge">Maintenance in progress</div>
+    <h2 id="tfMaintTitle">We'll Be Right Back</h2>
+    <p class="tf-maint-msg" id="tfMaintMessage">Our website is currently undergoing some improvements. We're working hard to make your experience faster, better, and more reliable.</p>
+    <div class="tf-maint-contact" id="tfMaintContact"></div>
+    <div class="tf-maint-footer" id="tfMaintFooter">We apologize for the temporary inconvenience. ❤️</div>
+  </div>
+</div>
+
+<!-- ===== TechFix Live Chat Widget (auto-inserted) ===== -->
+<!-- ===== TechFix Live Chat Widget ===== -->
+<div class="tf-chat-widget">
+  <button class="tf-chat-toggle" id="tfChatToggle" aria-label="Open live chat" type="button"><i class="fas fa-comment-dots"></i></button>
+  <div class="tf-chat-window tf-hidden" id="tfChatWindow">
+    <div class="tf-chat-header">
+      <div>
+        <div class="tf-chat-header-title">TechFix Support</div>
+        <div class="tf-chat-header-status" id="tfChatStatus">We're here to help</div>
+      </div>
+      <button class="tf-chat-close" id="tfChatClose" aria-label="Close chat" type="button"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="tf-chat-start" id="tfChatStart">
+      <h6>Start a conversation</h6>
+      <input type="text" class="form-control" id="tfName" placeholder="Your name">
+      <input type="email" class="form-control" id="tfEmail" placeholder="Your email">
+      <button class="btn btn-primary w-100 mb-2" id="tfStartBtn" type="button">Start Chat</button>
+      <button class="btn btn-link w-100" id="tfAnonBtn" type="button">Continue as Guest</button>
+    </div>
+    <div class="tf-chat-body tf-hidden" id="tfChatBody"></div>
+    <div class="tf-chat-input-row tf-hidden" id="tfChatInputRow">
+      <input type="text" id="tfChatInput" placeholder="Type a message...">
+      <button class="btn btn-primary" id="tfSendBtn" type="button"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+</div>
+
+      <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-laptop-code me-2"></i>TechFix
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="services.html">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pricing.html">Pricing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="appointment.html">Appointment</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="reviews.html">Reviews</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- Pricing Hero -->
+    <section class="pricing-hero">
+        <div class="container">
+            <h1 data-cms="pricing.hero.title">Transparent Pricing</h1>
+            <p data-cms="pricing.hero.subtitle">Affordable solutions for all your software needs</p>
+        </div>
+    </section>
+
+    <!-- Pricing Plans -->
+    <section class="pricing-plans">
+        <div class="container">
+            <div class="row justify-content-center text-center mb-5">
+                <div class="col-lg-8">
+                    <h2 class="section-title">Our Service Packages</h2>
+                    <p class="section-subtitle">Choose the right service for your needs</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <!-- Basic Package -->
+                <div class="col-md-4">
+                    <div class="pricing-card">
+                        <div class="pricing-header">
+                            <h3 data-cms="pricing.pkg.basic.name">Basic Fix</h3>
+                            <div class="price" data-cms="pricing.pkg.basic.price">৳300<span>-৳1300</span></div>
+                            <p class="price-description" data-cms="pricing.pkg.basic.desc">Simple software solutions</p>
+                        </div>
+                        <ul class="features">
+                            <li>Single software installation</li>
+                            <li>Basic troubleshooting</li>
+                            <li>Virus Scan & Basic Cleanup</li>
+                            <li>30 minutes support</li>
+                            <li>Email support for 3 days</li>
+                            <li class="disabled">Windows installation</li>
+                            <li class="disabled">Data recovery</li>
+                        </ul>
+                        <a href="appointment.html" class="btn btn-outline-primary w-100">Book Now</a>
+                    </div>
+                </div>
+                
+                <!-- Standard Package (Featured) -->
+                <div class="col-md-4">
+                    <div class="pricing-card featured">
+                        <div class="popular-badge">Most Popular</div>
+                        <div class="pricing-header">
+                            <h3 data-cms="pricing.pkg.standard.name">Standard Repair</h3>
+                            <div class="price" data-cms="pricing.pkg.standard.price">৳999<span>-৳3000</span></div>
+                            <p class="price-description" data-cms="pricing.pkg.standard.desc">Comprehensive software service</p>
+                        </div>
+                        <ul class="features">
+                            <li>Windows installation (1 version)</li>
+                            <li>Multiple software installations</li>
+                            <li>Complete virus removal</li>
+                            <li>Driver updates</li>
+                            <li>1 hour on-site/remote support</li>
+                            <li>7 days follow-up support</li>
+                            <li class="disabled">Advanced data recovery</li>
+                        </ul>
+                        <a href="appointment.html" class="btn btn-primary w-100">Book Now</a>
+                    </div>
+                </div>
+                
+                <!-- Premium Package -->
+                <div class="col-md-4">
+                    <div class="pricing-card">
+                        <div class="pricing-header">
+                            <h3 data-cms="pricing.pkg.premium.name">Premium Care</h3>
+                            <div class="price" data-cms="pricing.pkg.premium.price">৳2500<span>-৳5000</span></div>
+                            <p class="price-description" data-cms="pricing.pkg.premium.desc">Complete system solution</p>
+                        </div>
+                        <ul class="features">
+                            <li>Windows installation with optimization</li>
+                            <li>All necessary software installed</li>
+                            <li>Advanced virus/malware removal</li>
+                            <li>Full driver installation</li>
+                            <li>Data backup (up to 50GB)</li>
+                            <li>2 hours on-site/remote support</li>
+                            <li>14 days priority support</li>
+                        </ul>
+                        <a href="appointment.html" class="btn btn-outline-primary w-100">Book Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Service Pricing -->
+    <section class="service-pricing">
+        <div class="container">
+            <div class="row justify-content-center text-center mb-5">
+                <div class="col-lg-8">
+                    <h2 class="section-title">À La Carte Services</h2>
+                    <p class="section-subtitle">Pay only for what you need</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <div class="price-table">
+                        <div class="price-row header">
+                            <div class="price-col service">Service</div>
+                            <div class="price-col price">Price Range</div>
+                            <div class="price-col action">Action</div>
+                        </div>
+                        
+                        <div class="price-row">
+                            <div class="price-col service">
+                                <h4 data-cms="pricing.item.windows.name">Windows Installation</h4>
+                                <p data-cms="pricing.item.windows.desc">Clean installation with basic drivers</p>
+                            </div>
+                            <div class="price-col price" data-cms="pricing.item.windows.price">৳499 - ৳900</div>
+                            <div class="price-col action"><a href="appointment.html" class="btn btn-primary btn-sm">Book</a></div>
+                        </div>
+                        
+                        <div class="price-row">
+                            <div class="price-col service">
+                                <h4 data-cms="pricing.item.software.name">Software Installation</h4>
+                                <p data-cms="pricing.item.software.desc">Per software installation</p>
+                            </div>
+                            <div class="price-col price" data-cms="pricing.item.software.price">৳100 - ৳500</div>
+                            <div class="price-col action"><a href="appointment.html" class="btn btn-primary btn-sm">Book</a></div>
+                        </div>
+                        
+                        <div class="price-row">
+                            <div class="price-col service">
+                                <h4 data-cms="pricing.item.virus.name">Virus Removal</h4>
+                                <p data-cms="pricing.item.virus.desc">Complete scanning and cleaning</p>
+                            </div>
+                            <div class="price-col price" data-cms="pricing.item.virus.price">৳499 - ৳999</div>
+                            <div class="price-col action"><a href="appointment.html" class="btn btn-primary btn-sm">Book</a></div>
+                        </div>
+                        
+                        <div class="price-row">
+                            <div class="price-col service">
+                                <h4 data-cms="pricing.item.data.name">Data Recovery</h4>
+                                <p data-cms="pricing.item.data.desc">Basic file recovery</p>
+                            </div>
+                            <div class="price-col price" data-cms="pricing.item.data.price">৳499 - ৳2000</div>
+                            <div class="price-col action"><a href="appointment.html" class="btn btn-primary btn-sm">Book</a></div>
+                        </div>
+                        
+                        <div class="price-row">
+                            <div class="price-col service">
+                                <h4 data-cms="pricing.item.driver.name">Driver Installation</h4>
+                                <p data-cms="pricing.item.driver.desc">All necessary drivers</p>
+                            </div>
+                            <div class="price-col price" data-cms="pricing.item.driver.price">৳299 - ৳600</div>
+                            <div class="price-col action"><a href="appointment.html" class="btn btn-primary btn-sm">Book</a></div>
+                        </div>
+                        
+                        <div class="price-row">
+                            <div class="price-col service">
+                                <h4 data-cms="pricing.item.tuneup.name">System Tune-up</h4>
+                                <p data-cms="pricing.item.tuneup.desc">Performance optimization</p>
+                            </div>
+                            <div class="price-col price" data-cms="pricing.item.tuneup.price">৳500 - ৳1000</div>
+                            <div class="price-col action"><a href="appointment.html" class="btn btn-primary btn-sm">Book</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container">
+            <div class="row justify-content-center text-center mb-5">
+                <div class="col-lg-8">
+                    <h2 class="section-title">Pricing FAQs</h2>
+                    <p class="section-subtitle">Common questions about our pricing</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="accordion" id="faqAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                                    Why price ranges instead of fixed prices?
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Some services may require more or less time depending on your specific situation. We'll always provide an estimate before starting any work and won't proceed without your approval.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                                    Do you offer discounts?
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Yes! We offer 10% discount for students and senior citizens. We also have package deals for multiple services and regular customers.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingThree">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                                    What payment methods do you accept?
+                                </button>
+                            </h2>
+                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    We accept cash, bKash, Nagad, Rocket, and credit/debit cards. Payment is due when service is completed. For remote services, we require payment upfront.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingFour">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour">
+                                    Is there a warranty on your services?
+                                </button>
+                            </h2>
+                            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Yes, all our services come with a 7-day warranty. If the same issue reoccurs within this period, we'll fix it at no additional cost. Some services like data recovery may have different warranty terms.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingFive">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive">
+                                    What's your cancellation policy?
+                                </button>
+                            </h2>
+                            <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    You can cancel or reschedule your appointment up to 2 hours before the scheduled time without any charge. Late cancellations may incur a small fee.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+  <!-- Emergency Support -->
+    <section class="emergency-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mb-3 mb-lg-0">
+                    <h3 class="h2 mb-2">24/7 Emergency Support</h3>
+                    <p class="mb-0">For urgent software issues, contact us immediately</p>
+                </div>
+                <div class="col-lg-4 text-lg-end">
+                    <a href="tel:+8801876379742" class="btn btn-danger btn-lg px-4">
+                        <i class="fas fa-phone-alt me-2"></i> +880 1876379742
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+  <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <h5>
+                        <i class="fas fa-laptop-code me-2"></i> TechFix
+                    </h5>
+                    <p data-cms="global.tagline">Your trusted computer software service provider in Bangladesh since 2023.</p>
+                    <div class="social-links mt-3">
+                        <a href="https://www.facebook.com/MDSHAMIM1660" data-cms-href="global.facebook"><i class="fab fa-facebook-f"></i></a>
+                        <!-- <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a> -->
+                        <a href="https://www.linkedin.com/in/shamim1660/" data-cms-href="global.linkedin"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li><a href='/'>Home</a></li>
+                        <li><a href='/services'>Services</a></li>
+                        <li><a href='/pricing'>Pricing</a></li>
+                        <li><a href='/appointment'>Appointment</a></li>
+                        <li><a href='/contact'>Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <h5>Services</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li><a href='/services#windows'>Windows Installation</a></li>
+                        <li><a href='/services#software'>Software Installation</a></li>
+                        <li><a href='/services#virus'>Virus Removal</a></li>
+                        <li><a href='/services#data'>Data Recovery</a></li>
+                        <li><a href='/services'>All Services</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <h5>Contact</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i> <span data-cms="global.address">KirtonKhola Poltonpar, Sakhipur,Tangail,Dhaka</span></li>
+                        <li class="mb-2"><i class="fas fa-phone-alt me-2"></i> <a href="tel:+8801876379742" class="text-white text-decoration-none" data-cms-tel="global.phone"><span data-cms="global.phone">+880 1876379742</span></a></li>
+                        <li class="mb-2"><i class="fas fa-envelope me-2"></i> <a href="mailto:shamimmd1618@gmail.com" class="text-white text-decoration-none" data-cms-mailto="global.email"><span data-cms="global.email">shamimmd1618@gmail.com</span></a></li>
+                        <li class="mb-2"><i class="fas fa-clock me-2"></i> <span data-cms="global.hours">Sat-Thu: 9AM-8PM</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row copyright">
+                <div class="col-md-6 text-center text-md-start">
+                    
+
+<span>© <span id="year"></span> TechFix. All rights reserved.</span>
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
+
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <p class="mb-0 small">Designed with <i class="fas fa-heart text-danger"></i> by Md Shamim</p>
+                </div>
+            </div>
+        </div>
+
+
+
+  
+
+
+
+
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <!-- Main JS -->
+    <script>
+   // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyBEzDwFvrlM7vp3jX49o0P1A8jZwI7dUmI",
+  authDomain: "techfix-4f654.firebaseapp.com",
+  projectId: "techfix-4f654",
+  storageBucket: "techfix-4f654.firebasestorage.app",
+  messagingSenderId: "987309677818",
+  appId: "1:987309677818:web:3897db33da7ca074ef7d43",
+  measurementId: "G-PLD01M4CJ6"
+};
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+
+<script>
+/* ===== TechFix Live Chat Widget logic ===== */
+(function(){
+  function boot(){
+    if(typeof firebase === 'undefined' || !firebase.apps || !firebase.apps.length) { setTimeout(boot, 300); return; }
+    var db = firebase.firestore();
+    var toggle=document.getElementById('tfChatToggle'), win=document.getElementById('tfChatWindow'),
+        closeBtn=document.getElementById('tfChatClose'), startForm=document.getElementById('tfChatStart'),
+        body=document.getElementById('tfChatBody'), inputRow=document.getElementById('tfChatInputRow'),
+        nameInput=document.getElementById('tfName'), emailInput=document.getElementById('tfEmail'),
+        startBtn=document.getElementById('tfStartBtn'), anonBtn=document.getElementById('tfAnonBtn'),
+        chatInput=document.getElementById('tfChatInput'), sendBtn=document.getElementById('tfSendBtn'),
+        statusEl=document.getElementById('tfChatStatus');
+    if(!toggle) return;
+
+    var chatId = localStorage.getItem('techfix_chat_id');
+    var visitorName = localStorage.getItem('techfix_visitor_name') || '';
+    var visitorEmail = localStorage.getItem('techfix_visitor_email') || '';
+    var msgsUnsub=null, statusUnsub=null;
+    var AUTO_REPLY = "Thanks for reaching out to TechFix! We'll reply soon during business hours (Sat-Thu: 9AM-8PM).";
+
+    function show(el){ el.classList.remove('tf-hidden'); }
+    function hide(el){ el.classList.add('tf-hidden'); }
+    function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+    function fmt(ts){ if(!ts) return ''; var d = ts.toDate?ts.toDate():new Date(ts); return d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}); }
+
+    function addMsg(d){
+      var w=document.createElement('div');
+      w.className='tf-chat-msg '+(d.sender==='customer'?'tf-customer':'tf-bot');
+      var b=document.createElement('div');
+      b.className='tf-bubble';
+      b.innerHTML='<div>'+esc(d.message)+'</div><div class="tf-chat-msg-meta">'+fmt(d.timestamp)+'</div>';
+      w.appendChild(b);
+      body.appendChild(w);
+      body.scrollTop = body.scrollHeight;
+    }
+
+    function openChat(id){
+      show(body); show(inputRow); hide(startForm);
+      body.innerHTML='';
+      if(msgsUnsub) msgsUnsub();
+      if(statusUnsub) statusUnsub();
+      statusUnsub = db.collection('live_chats').doc(id).onSnapshot(function(doc){
+        var d=doc.data()||{};
+        statusEl.textContent = d.adminOnline ? 'Admin is online' : "We're here to help";
+      });
+      msgsUnsub = db.collection('live_chats').doc(id).collection('messages').orderBy('timestamp','asc')
+        .onSnapshot(function(snap){
+          snap.docChanges().forEach(function(c){ if(c.type==='added') addMsg(c.doc.data()); });
+        });
+    }
+
+    function ensureWelcome(id){
+      var ref = db.collection('live_chats').doc(id).collection('messages');
+      ref.limit(1).get().then(function(q){
+        if(q.empty){
+          ref.add({sender:'bot',name:'TechFix',message:'Hi! Welcome to TechFix. How can we help you today?',timestamp:firebase.firestore.FieldValue.serverTimestamp()});
+        }
+      });
+    }
+
+    function startChat(name, email){
+      visitorName = name; visitorEmail = email;
+      localStorage.setItem('techfix_visitor_name', name);
+      localStorage.setItem('techfix_visitor_email', email);
+      var p;
+      if(!chatId){
+        p = db.collection('live_chats').add({name:name,email:email,lastMessage:'',lastUpdated:firebase.firestore.FieldValue.serverTimestamp(),adminOnline:false})
+          .then(function(ref){ chatId = ref.id; localStorage.setItem('techfix_chat_id', chatId); });
+      } else {
+        p = db.collection('live_chats').doc(chatId).set({name:name,email:email,lastUpdated:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+      }
+      p.then(function(){ openChat(chatId); ensureWelcome(chatId); });
+    }
+
+    toggle.addEventListener('click', function(){
+      if(win.classList.contains('tf-hidden')){
+        show(win);
+        if(chatId){ openChat(chatId); }
+        else { show(startForm); hide(body); hide(inputRow); }
+      } else { hide(win); }
+    });
+    closeBtn.addEventListener('click', function(){ hide(win); });
+    startBtn.addEventListener('click', function(){
+      var n=(nameInput.value||'').trim(), e=(emailInput.value||'').trim();
+      if(!n){ alert('Please enter your name'); return; }
+      if(!e || e.indexOf('@')===-1){ alert('Please enter a valid email'); return; }
+      startChat(n,e);
+    });
+    anonBtn.addEventListener('click', function(){ startChat('Guest',''); });
+
+    function sendMsg(){
+      var text=(chatInput.value||'').trim();
+      if(!text) return;
+      if(!chatId){ alert('Please start the chat first.'); return; }
+      chatInput.value='';
+      db.collection('live_chats').doc(chatId).collection('messages').add({
+        sender:'customer', name:visitorName||'Guest', email:visitorEmail||'', message:text, timestamp:firebase.firestore.FieldValue.serverTimestamp()
+      }).then(function(){
+        return db.collection('live_chats').doc(chatId).set({lastMessage:text,lastUpdated:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+      }).then(function(){
+        return db.collection('live_chats').doc(chatId).get();
+      }).then(function(snap){
+        var d = snap.data()||{};
+        if(!d.adminOnline){
+          db.collection('live_chats').doc(chatId).collection('messages').add({sender:'bot',name:'TechFix',message:AUTO_REPLY,timestamp:firebase.firestore.FieldValue.serverTimestamp()});
+          db.collection('live_chats').doc(chatId).set({lastMessage:AUTO_REPLY,lastUpdated:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+        }
+      });
+    }
+    sendBtn.addEventListener('click', sendMsg);
+    chatInput.addEventListener('keydown', function(e){ if(e.key==='Enter') sendMsg(); });
+  }
+  document.addEventListener('DOMContentLoaded', boot);
+})();
+</script>
+
+<script>
+/* ===== TechFix CMS content loader + Maintenance Mode (admin-editable) ===== */
+(function(){
+  function applyCMS(data){
+    data = data || {};
+    document.querySelectorAll('[data-cms]').forEach(function(el){
+      var k = el.getAttribute('data-cms');
+      if(data[k]) el.innerHTML = data[k];
+    });
+    document.querySelectorAll('[data-cms-tel]').forEach(function(el){
+      var k = el.getAttribute('data-cms-tel');
+      if(data[k]) el.setAttribute('href','tel:'+String(data[k]).replace(/[^\d+]/g,''));
+    });
+    document.querySelectorAll('[data-cms-mailto]').forEach(function(el){
+      var k = el.getAttribute('data-cms-mailto');
+      if(data[k]) el.setAttribute('href','mailto:'+data[k]);
+    });
+    document.querySelectorAll('[data-cms-href]').forEach(function(el){
+      var k = el.getAttribute('data-cms-href');
+      if(data[k]) el.setAttribute('href', data[k]);
+    });
+    document.querySelectorAll('[data-cms-src]').forEach(function(el){
+      var k = el.getAttribute('data-cms-src');
+      var v = data[k];
+      if(v){
+        var m = String(v).match(/src=["']([^"']+)["']/i);
+        if(m) v = m[1];
+        el.setAttribute('src', v);
+      }
+    });
+  }
+  function applyMaintenance(data){
+    data = data || {};
+    var overlay = document.getElementById('tfMaintenanceOverlay');
+    if(!overlay) return;
+    if(data['maintenance.enabled'] === true){
+      document.getElementById('tfMaintBadge').textContent = data['maintenance.badge'] || 'Maintenance in progress';
+      document.getElementById('tfMaintTitle').textContent = data['maintenance.title'] || "We'll Be Right Back";
+      document.getElementById('tfMaintMessage').textContent = data['maintenance.message'] || "Our website is currently undergoing some improvements. We're working hard to make your experience faster, better, and more reliable.";
+      document.getElementById('tfMaintFooter').textContent = data['maintenance.footer'] || 'We apologize for the temporary inconvenience. ❤️';
+      var phone = data['global.phone'], email = data['global.email'];
+      var bits = [];
+      if(phone) bits.push('<a href="tel:'+String(phone).replace(/[^\d+]/g,'')+'"><i class="fas fa-phone-alt me-1"></i>'+phone+'</a>');
+      if(email) bits.push('<a href="mailto:'+email+'"><i class="fas fa-envelope me-1"></i>'+email+'</a>');
+      document.getElementById('tfMaintContact').innerHTML = bits.length ? ('Need urgent help? &nbsp; ' + bits.join(' &nbsp;&middot;&nbsp; ')) : '';
+      overlay.classList.add('tf-show');
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      overlay.classList.remove('tf-show');
+      document.documentElement.style.overflow = '';
+    }
+  }
+  function boot(){
+    if(typeof firebase === 'undefined' || !firebase.apps || !firebase.apps.length){ setTimeout(boot, 300); return; }
+    firebase.firestore().collection('siteContent').doc('main').onSnapshot(function(doc){
+      var data = doc.exists ? doc.data() : {};
+      applyCMS(data);
+      applyMaintenance(data);
+    }, function(err){ console.warn('Site content load skipped', err); });
+  }
+  document.addEventListener('DOMContentLoaded', boot);
+})();
+</script>
+
+<script src="protect.js" defer></script>
+</body>
+</html>
