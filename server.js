@@ -406,7 +406,7 @@ bot.on('callback_query', async (query) => {
       await db.collection('live_chats').doc(id).set({ unread: false }, { merge: true }).catch(() => {});
       await bot.sendMessage(chatId, `🗒 <b>${esc(name)}</b>-এর আগের কথোপকথন:\n\n${esc(history)}`, { parse_mode: 'HTML' });
       await bot.sendMessage(chatId,
-        `✍️ এখন থেকে আপনার পরবর্তী মেসেজগুলো (রিপ্লাই মোড ছাড়াই সাধারণভাবে টাইপ করলেই) <b>${esc(name)}</b>-কে পাঠানো হবে এবং সে সাথে সাথে দেখতে পাবে।\nথামাতে বা অন্য কাউকে বেছে নিতে /stopchat বা /chats লিখুন।`,
+        `/stopchat বা /chats`,
         { parse_mode: 'HTML' }
       );
     } else if (data.startsWith('cl:d:')) {
