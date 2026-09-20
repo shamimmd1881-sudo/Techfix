@@ -90,6 +90,94 @@ async function sendAdmin(text, opts = {}) {
   return bot.sendMessage(ADMIN_CHAT_ID, text, { parse_mode: 'HTML', ...opts });
 }
 
+// --- Appointment status-change emails ---
+// Same template/behavior as the website's Netlify functions (see
+// techfix24-site/netlify/functions/_shared/appointment-email.js) — kept as a
+// separate copy here since this runs on a different host, but intentionally
+// mirrors it so a customer gets the same-looking email regardless of
+// whether their status was changed from Telegram or the admin panel.
+const TRACK_URL = process.env.TRACK_URL || 'https://techfix24.netlify.app/appointment#trackAppointmentPanel';
+
+function statusMeta(status) {
+  switch (status) {
+    case 'Contacted': return { label: 'Contacted', bg: '#dbeafe', fg: '#1e40af' };
+    case 'Completed': return { label: 'Completed', bg: '#dcfce7', fg: '#166534' };
+    case 'Cancelled': return { label: 'Cancelled', bg: '#fee2e2', fg: '#991b1b' };
+    case 'New':
+    default:          return { label: 'Pending',   bg: '#fff3cd', fg: '#664d03' };
+  }
+}
+
+function buildAppointmentStatusEmail({ name, trackId, status }) {
+  const safeName = esc(name || 'Customer');
+  const safeId = esc(trackId);
+  const meta = statusMeta(status);
+  const subject = `TechFix Appointment Update: ${meta.label} – ${trackId}`;
+  const introText = `Your appointment status has been updated to: ${meta.label}.`;
+
+  const text =
+    `Hello ${name || 'Customer'},\n\n${introText}\n\n` +
+    `Track/Support ID: ${trackId}\nStatus: ${meta.label}\n\n` +
+    `You can use your Track/Support ID to check your appointment status anytime:\n${TRACK_URL}\n\n` +
+    `Thank you for choosing TechFix.\n\nTechFix\nComputer & Software Services\nSakhipur, Tangail, Bangladesh\n` +
+    `support.techfix24@gmail.com\ntechfix24.netlify.app`;
+
+  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>TechFix Appointment Update</title></head>
+  <body style="margin:0;padding:0;background:#f5f7fa;font-family:Arial,Helvetica,sans-serif;color:#222;">
+    <div style="width:100%;padding:30px 12px;box-sizing:border-box;">
+      <div style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:10px;padding:30px;box-sizing:border-box;border:1px solid #e5e7eb;">
+        <h2 style="color:#0d6efd;margin:0 0 20px;font-size:22px;line-height:1.3;">TechFix Appointment Update</h2>
+        <p style="margin:0 0 16px;font-size:15px;line-height:1.6;">Hello ${safeName},</p>
+        <p style="margin:0 0 20px;font-size:15px;line-height:1.6;">${introText}</p>
+        <table style="width:100%;border-collapse:collapse;margin:16px 0 20px;font-size:14px;">
+          <tr><td style="padding:8px 0;color:#555;width:55%;">Track/Support ID</td><td style="padding:8px 0;font-weight:bold;color:#222;">${safeId}</td></tr>
+          <tr><td style="padding:8px 0;color:#555;">Status</td><td style="padding:8px 0;"><span style="background:${meta.bg};color:${meta.fg};padding:4px 10px;border-radius:12px;font-size:13px;display:inline-block;">${meta.label}</span></td></tr>
+        </table>
+        <p style="margin:0 0 22px;font-size:14px;line-height:1.6;color:#444;">You can use your Track/Support ID to check your appointment status anytime.</p>
+        <p style="text-align:center;margin:26px 0;"><a href="${TRACK_URL}" style="background:#0d6efd;color:#ffffff;text-decoration:none;padding:13px 26px;border-radius:6px;display:inline-block;font-weight:bold;font-size:14px;">Track My Appointment</a></p>
+        <p style="margin:24px 0 0;font-size:14px;line-height:1.6;">Thank you for choosing TechFix.</p>
+        <div style="margin-top:28px;padding-top:18px;border-top:1px solid #e5e7eb;color:#555;font-size:13px;line-height:1.7;">
+          <strong style="color:#222;font-size:15px;">TechFix</strong><br>Computer &amp; Software Services<br>Sakhipur, Tangail, Bangladesh<br>
+          <a href="mailto:support.techfix24@gmail.com" style="color:black;text-decoration:none;">support.techfix24@gmail.com</a><br>
+          <a href="https://techfix24.netlify.app" style="color:black;text-decoration:none;">techfix24.netlify.app</a>
+          <p style="margin:12px 0 0;color:#777;font-size:12px;">Reliable &bull; Professional &bull; Trusted</p>
+        </div>
+      </div>
+    </div>
+  </body></html>`;
+
+  return { subject, text, html };
+}
+
+// Fire-and-forget from every call site: a customer not having an email on
+// file, or the email itself failing, must never block or undo a status
+// change that has already been saved to Firestore.
+async function sendAppointmentStatusEmail(data, status) {
+  if (!mailer) return; // SMTP not configured on this host — silently skip
+  if (!data || !data.email || !data.referenceNumber) return;
+  try {
+    const { subject, text, html } = buildAppointmentStatusEmail({
+      name: data.name, trackId: data.referenceNumber, status
+    });
+    await mailer.sendMail({
+      from: process.env.MAIL_FROM || process.env.SMTP_USER,
+      to: data.email,
+      subject, text, html
+    });
+  } catch (e) {
+    console.error('[sendAppointmentStatusEmail] failed for', data.referenceNumber, e.message);
+  }
+}
+
+// Exactly-once wrapper: an appointment only ever gets one email per distinct
+// status value it passes through, no matter how many times the underlying
+// document is touched or how many bridge instances briefly overlap. Reuses
+// the same atomic-create claim trick as claimNotification().
+async function maybeSendAppointmentStatusEmail(id, data, status) {
+  if (!(await claimNotification('apptEmail', `${id}_${status}`))) return;
+  await sendAppointmentStatusEmail(data, status);
+}
+
 // --- Exactly-once notification guard ---
 // If a redeploy briefly overlaps with the previous instance (common on
 // container hosts), BOTH processes see the same new Firestore doc and would
@@ -300,6 +388,9 @@ async function updateAppointment(id, status) {
   if (!snap.exists) throw new Error(`No appointment found with id "${id}".`);
   await ref.update({ status, statusUpdatedAt: FieldValue.serverTimestamp() });
   await mirrorStatusToTracking(snap.data().referenceNumber, status);
+  // The status-change email is sent by watchAppointments()'s 'modified'
+  // handler below, since this update() call is what triggers it — no need
+  // to also send it from here.
 }
 
 // ---------------------------------------------------------------------------
@@ -617,9 +708,20 @@ function watchContacts() {
 function watchAppointments() {
   db.collection('appointments').orderBy('timestamp', 'desc').onSnapshot(snap => {
     snap.docChanges().forEach(ch => {
-      if (ch.type !== 'added') return;
       const data = ch.doc.data();
-      if (bootReady && isRecent(data.timestamp)) notifyAppointment(ch.doc.id, data).catch(console.error);
+      if (ch.type === 'added') {
+        // Booking confirmation email is sent by the website itself
+        // (Netlify function, right after the booking form submits) — not
+        // duplicated here. Only the Telegram notification happens on a new
+        // appointment.
+        if (bootReady && isRecent(data.timestamp)) notifyAppointment(ch.doc.id, data).catch(console.error);
+      } else if (ch.type === 'modified') {
+        // Every later status change — from the Telegram /status command,
+        // the admin panel's dropdown, or the 5-day auto-cancel job — writes
+        // to this same document, so this one listener catches all of them
+        // and emails the customer via Suga's own SMTP.
+        maybeSendAppointmentStatusEmail(ch.doc.id, data, data.status || 'New').catch(console.error);
+      }
     });
   }, err => console.error('[Firestore appointments]', err));
 }
@@ -689,6 +791,8 @@ async function autoCancelStaleAppointments() {
       if (now - end.getTime() >= APPOINTMENT_GRACE_MS) {
         await doc.ref.update({ status: 'Cancelled', autoCancelled: true, statusUpdatedAt: FieldValue.serverTimestamp() });
         await mirrorStatusToTracking(data.referenceNumber, 'Cancelled');
+        // Status email is sent by watchAppointments()'s 'modified' handler,
+        // triggered by the update() call above.
         sendAdmin(`⏰ <b>Auto-cancelled</b> (no action taken within 5 days of the slot): ${esc(data.referenceNumber || doc.id)} — ${esc(data.name || '—')}`).catch(console.error);
       }
     }

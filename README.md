@@ -18,7 +18,8 @@ needs to know the other's URL.
 
 - 🔔 New **Contact Message** → Telegram notification → reply to it to send an email reply (SMTP required)
 - 🔔 New **Appointment** → Telegram notification → `/status Contacted|Completed|Cancelled` as a reply to update it
-- ⏳ An appointment nobody actions within 5 days of its scheduled time is **auto-cancelled**, with a Telegram notice
+- ✉️ Every status change — from `/status`, from the admin panel's dropdown in `login-admin.html`, or from the 5-day auto-cancel — **emails the customer** an update using this bridge's own SMTP (the *initial* booking confirmation is still sent separately by the website itself on Netlify)
+- ⏳ An appointment nobody actions within 5 days of its scheduled time is **auto-cancelled**, with a Telegram notice and a status email to the customer
 - 💬 New **Live Chat** message → Telegram notification (visitor, email, message only)
 - 📋 `/chats` — browse every live-chat visitor, pin/rename/delete, or select one to message directly (shows chat history, no need to swipe-reply)
 - 📣 `/broadcast <message>` — message every live-chat visitor at once
